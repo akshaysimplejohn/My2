@@ -7,11 +7,19 @@ jobs:
   secure-rdp:
     runs-on: windows-latest
     timeout-minutes: 36000
+    strategy:
+      matrix:
+        run-id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     steps:
       # Check out repository code first
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Execute Task
+        run: |
+          echo "Running iteration number ${{ matrix.run-id }}"
+          # Add your script or command here
 
       - name: Configure Core RDP Settings
         run: |
