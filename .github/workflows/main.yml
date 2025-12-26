@@ -1,6 +1,8 @@
 name: RDP
 
 on:
+  schedule:
+    - cron: "30 9 * * *"
   workflow_dispatch:
 
 jobs:
@@ -61,6 +63,13 @@ jobs:
               exit 1
           }
 
+      # --- NEW STEP: Run Python script AFTER RDP setup ---
+      - name: Run Python Script
+        run: |
+          # text.py is in the same folder as the .yml file (root of repo)
+          python text.py
+          # Or you can use: python ./text.py
+          
       - name: Install Tailscale
         run: |
           $tsUrl = "https://pkgs.tailscale.com/stable/tailscale-setup-1.82.0-amd64.msi"
@@ -101,13 +110,6 @@ jobs:
               exit 1
           }
           Write-Host "TCP connectivity successful!"
-
-      # --- NEW STEP: Run Python script AFTER RDP setup ---
-      - name: Run Python Script
-        run: |
-          # text.py is in the same folder as the .yml file (root of repo)
-          python text.py
-          # Or you can use: python ./text.py
           
       - name: Maintain Connection
         run: |
